@@ -8,12 +8,10 @@ PORT = 65432
 BUFFER_SIZE = 4096
 
 def handle_client(conn, addr):
-    """
-    Обрабатывает одно клиентское подключение: принимает файл и проверяет его.
-    """
+
     print(f"[+] Подключен клиент: {addr}")
     try:
-        # 1. Получаем метаданные: "имя_файла:хэш_файла"
+      
         received_meta = conn.recv(BUFFER_SIZE).decode()
         if not received_meta or ':' not in received_meta:
             print("[-] Не получены метаданные от клиента. Отключение.")
@@ -26,7 +24,7 @@ def handle_client(conn, addr):
         # Отправляем подтверждение клиенту
         conn.sendall(b"META_OK")
 
-        # 2. Прием и сохранение файла
+   
         sha256 = hashlib.sha256()
         received_path = os.path.join("received_files", filename)
         os.makedirs("received_files", exist_ok=True)
@@ -40,7 +38,7 @@ def handle_client(conn, addr):
                 f.write(chunk)
                 sha256.update(chunk)
 
-        # 3. Проверка целостности
+  
         received_hash = sha256.hexdigest()
         print(f"[*] Файл полностью получен. Вычисленный хэш: '{received_hash[:10]}...'")
 
@@ -58,10 +56,7 @@ def handle_client(conn, addr):
         conn.close()
 
 def start_server():
-    """
-    Запускает сервер, который работает в бесконечном цикле,
-    принимая и обрабатывая подключения.
-    """
+
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
         server_socket.bind((HOST, PORT))
         server_socket.listen()
@@ -72,4 +67,5 @@ def start_server():
             handle_client(conn, addr)
 
 if __name__ == '__main__':
+
     start_server()
