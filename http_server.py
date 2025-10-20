@@ -3,10 +3,6 @@ import socket
 HOST = 'localhost'
 PORT = 65432
 
-# --- ШАГ 1: СОЗДАЕМ ОБЫЧНЫЕ СТРОКИ (не байтовые) ---
-
-# Убираем префикс b""" и работаем с обычным текстом.
-# Теперь Python не ругается на русские буквы.
 html_200_ok_text = """HTTP/1.1 200 OK
 Content-Type: text/html; charset=utf-8
 Connection: close
@@ -53,16 +49,15 @@ def start_web_server():
                 print("--- Запрос от браузера ---")
                 print(request.strip())
                 print("--- Конец запроса ---")
-
                 if request.startswith('GET / HTTP/1.1'):
                     print("[>] Отправляю ответ 200 OK")
-                    # --- ШАГ 2: КОДИРУЕМ ТЕКСТ В БАЙТЫ ПЕРЕД ОТПРАВКОЙ ---
+
                     conn.sendall(html_200_ok_text.encode('utf-8'))
                 else:
                     print("[>] Отправляю ответ 404 Not Found")
-                    # --- И ЗДЕСЬ ТОЖЕ КОДИРУЕМ ---
                     conn.sendall(html_404_not_found_text.encode('utf-8'))
 
 
 if __name__ == '__main__':
+
     start_web_server()
