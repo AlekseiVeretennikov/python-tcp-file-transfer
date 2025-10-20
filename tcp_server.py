@@ -2,7 +2,7 @@ import socket
 import hashlib
 import os
 
-# Настройки сервера
+
 HOST = 'localhost'
 PORT = 65432
 BUFFER_SIZE = 4096
@@ -21,7 +21,6 @@ def handle_client(conn, addr):
         filename = os.path.basename(filename)
         print(f"[*] Получены метаданные: Имя файла '{filename}', Хэш '{expected_hash[:10]}...'")
 
-        # Отправляем подтверждение клиенту
         conn.sendall(b"META_OK")
 
    
@@ -69,3 +68,4 @@ def start_server():
 if __name__ == '__main__':
 
     start_server()
+
